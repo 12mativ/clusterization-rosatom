@@ -7,7 +7,7 @@ export const clusterApi = createApi({
   }),
   endpoints: (builder) => ({
     clusterFile: builder.mutation({
-      query: (file: File) => ({
+      query: (file) => ({
         url: '/predict',
         method: 'POST',
         body: file,
