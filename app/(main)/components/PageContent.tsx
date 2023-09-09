@@ -61,7 +61,7 @@ const PageContent = () => {
     }
   }
 
-  if (isLoading || isLoadingViz) {
+  if (isLoading || histIsLoading || scatterIsLoading || bubbleIsLoading) {
     return <Loader />
   }
 
