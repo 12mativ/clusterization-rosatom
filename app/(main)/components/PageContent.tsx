@@ -27,7 +27,7 @@ const PageContent = () => {
   const [clusterTextScatter, {isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
   const [clusterTextBubble, {isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
 
-  const isLoadingViz = histIsLoading && scatterIsLoading && bubbleIsLoading
+  const isLoadingViz = histIsLoading || scatterIsLoading || bubbleIsLoading
 
   const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
