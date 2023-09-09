@@ -205,6 +205,7 @@ const PageContent = () => {
   const [currentAnswer, setCurrentAnswer] = useState('')
   const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [histData, setHistData] = useState()
 
   const handleAddAnswer = () => {
     if (currentAnswer.length === 0) {
@@ -242,6 +243,7 @@ const PageContent = () => {
   const sendAnswers = async () => {
     if (answers.length !== 0) {
       const data = await clusterText(answers)
+      setHistData(data)
       console.log(data)
       return setSubmitted(true)
     } else {
@@ -366,7 +368,7 @@ const PageContent = () => {
         </div>
 
         <div className='w-full'>
-          <HistogramVisualization chartData={histogramData} />
+          <HistogramVisualization chartData={histData} />
         </div>
       </div>
     </div>
