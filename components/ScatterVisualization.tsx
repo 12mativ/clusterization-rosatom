@@ -21,7 +21,11 @@ interface ClusterVisualizationProps {
   chartData: Cluster[]
 }
 
-function ClusterVisualization({chartData}: ClusterVisualizationProps) {
+function ScatterVisualization({chartData}: ClusterVisualizationProps) {
+  if (!chartData) {
+    return
+  }
+
   const data = chartData.map((cluster) => ({
     x: cluster.dataPoints.map((point) => point.x),
     y: cluster.dataPoints.map((point) => point.y),
@@ -34,21 +38,6 @@ function ClusterVisualization({chartData}: ClusterVisualizationProps) {
     displayModeBar: false,
     displaylogo: false,
   }
-
-  /*const saveImage = () => {
-      const plotlyGraph = document.querySelector('.js-plotly-plot') as HTMLElement;
-      const svgData = plotlyGraph.querySelector('svg')?.outerHTML;
-
-      if (svgData) {
-          const blob = new Blob([svgData], {type: 'image/svg+xml'});
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'cluster-visualization.svg';
-          a.click();
-          URL.revokeObjectURL(url);
-      }
-  }*/
 
   return (
     <div className='flex w-full h-full items-center justify-center'>
@@ -78,4 +67,4 @@ function ClusterVisualization({chartData}: ClusterVisualizationProps) {
   )
 }
 
-export default ClusterVisualization;
+export default ScatterVisualization;

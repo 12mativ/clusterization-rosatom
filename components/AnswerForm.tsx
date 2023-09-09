@@ -4,7 +4,11 @@ import Input from "@/components/Input";
 import Button from "@/components/Button";
 import React, {useState} from "react";
 import toast from "react-hot-toast";
-import {useClusterTextHistMutation} from "@/redux/services/ClusterApi";
+import {
+  useClusterTextBubbleMutation,
+  useClusterTextHistMutation,
+  useClusterTextScatterMutation
+} from "@/redux/services/ClusterApi";
 import {v4 as uuidv4} from 'uuid'
 import {AiFillDelete, AiOutlinePlusCircle} from "react-icons/ai";
 import {BsArrowUpRight} from "react-icons/bs";
@@ -17,15 +21,16 @@ interface Answer {
 interface AnswerFormProps {
   setHistData: (data: any) => void
   setScatterData: (data: any) => void
+  setBubbleData: (data: any) => void
   setSubmitted: (boolean: boolean) => void
 }
 
 const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setScatterData}) => {
   const [clusterTextHist, {data: histData, error: histError, isLoading: histIsLoading}] = useClusterTextHistMutation()
-  const [clusterTextScatter, {data: scatterData, error: scatterError, isLoading: scatterIsLoading}] = useClusterTextHistMutation()
+  const [clusterTextScatter, {data: scatterData, error: scatterError, isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
+  const [clusterTextBubble, {data: bubbleData, error: bubbleError, isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
   const [currentAnswer, setCurrentAnswer] = useState('')
   const [answers, setAnswers] = useState<Answer[]>([])
-
 
   const handleAddAnswer = () => {
     if (currentAnswer.length === 0) {
@@ -39,16 +44,18 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
   }
 
   const sendAnswers = async () => {
-    if (answers.length !== 0) {
+    if (answers.length > 1) {
       const dataHist = await clusterTextHist(answers)
       const dataScatter = await clusterTextScatter(answers)
+      const dataBubble = await clusterTextBubble(answers)
       setHistData(dataHist)
       setScatterData(dataScatter)
       console.log(dataHist)
       console.log(dataScatter)
+      console.log(dataBubble)
       return setSubmitted(true)
     } else {
-      return toast.error('Вы должны добавить хотя бы один ответ')
+      return toast.error('Вы должны добавить больше одного ответа')
     }
   }
 

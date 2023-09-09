@@ -121,7 +121,7 @@ import AnswerForm from '@/components/AnswerForm'
   },
 ]*/
 
-const bubbleData = [
+/*const bubbleData = [
   {
     chartName: 'Кластер 1',
     xValues: [1],
@@ -154,39 +154,9 @@ const bubbleData = [
     markerColors: ['purple'],
     textLabels: ['Кластер 4'],
   },
-]
+]*/
 
-/*
-const histogramData = {
-  Cluster1: 10,
-  Cluster2: 15,
-  Cluster3: 22,
-  Cluster4: 30,
-  Cluster5: 18,
-  Cluster6: 25,
-  Cluster8: 28,
-  Cluster9: 28,
-  Cluster10: 28,
-  Cluster11: 28,
-  Cluster12: 28,
-  Cluster13: 28,
-  Cluster14: 28,
-  Cluster15: 28,
-  Cluster16: 28,
-  Cluster17: 28,
-  Cluster18: 28,
-  Cluster19: 28,
-  Cluster20: 28,
-  Cluster21: 28,
-  Cluster22: 28,
-  Cluster23: 28,
-  Cluster24: 28,
-  Cluster25: 28,
-  Cluster26: 28,
-  Cluster27: 28,
-  Cluster28: 28,
-}
-*/
+export const revalidate = 0
 
 const PageContent = () => {
   const router = useRouter()
@@ -195,6 +165,7 @@ const PageContent = () => {
   const [submitted, setSubmitted] = useState(false)
   const [histData, setHistData] = useState()
   const [scatterData, setScatterData] = useState()
+  const [bubbleData, setBubbleData] = useState()
 
   const uploadFile: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -217,8 +188,6 @@ const PageContent = () => {
       setUploading(false)
     }
   }
-
-
 
   return !submitted ? (
     <div className='w-full flex items-center justify-center p-2'>
@@ -252,7 +221,12 @@ const PageContent = () => {
 
           <p className='py-4 text-xl'>Или...</p>
 
-          <AnswerForm setHistData={setHistData} setSubmitted={setSubmitted} setScatterData={setScatterData}/>
+          <AnswerForm
+            setHistData={setHistData}
+            setSubmitted={setSubmitted}
+            setScatterData={setScatterData}
+            setBubbleData={setBubbleData}
+          />
         </Box>
       </div>
     </div>
@@ -271,7 +245,7 @@ const PageContent = () => {
         </div>
 
         <div className='w-full'>
-          <BubbleVisualization chartData={bubbleData} />
+          <BubbleVisualization chartData={bubbleData.data} />
         </div>
 
         <div className='w-full'>

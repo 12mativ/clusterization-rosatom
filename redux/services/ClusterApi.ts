@@ -1,15 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
 type User = {
-  id: number;
-  name: string;
-  email: number;
-};
+  id: number
+  name: string
+  email: number
+}
 
 export const clusterApi = createApi({
-  reducerPath: "clusterApi",
+  reducerPath: 'clusterApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/",
+    baseUrl: 'http://localhost:5000/',
   }),
   endpoints: (builder) => ({
     clusterFile: builder.mutation({
@@ -17,7 +17,7 @@ export const clusterApi = createApi({
         url: '/posts',
         method: 'POST',
         body: file,
-      })
+      }),
     }),
     clusterTextHist: builder.mutation({
       query: (answers) => ({
@@ -27,7 +27,7 @@ export const clusterApi = createApi({
         },
         method: 'POST',
         body: JSON.stringify({answers: answers}),
-      })
+      }),
     }),
     clusterTextScatter: builder.mutation({
       query: (answers) => ({
@@ -37,9 +37,24 @@ export const clusterApi = createApi({
         },
         method: 'POST',
         body: JSON.stringify({answers: answers}),
-      })
-    })
+      }),
+    }),
+    clusterTextBubble: builder.mutation({
+      query: (answers) => ({
+        url: '/bubbles',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        method: 'POST',
+        body: JSON.stringify({answers: answers}),
+      }),
+    }),
   }),
-});
+})
 
-export const { useClusterFileMutation, useClusterTextHistMutation } = clusterApi;
+export const {
+  useClusterFileMutation,
+  useClusterTextHistMutation,
+  useClusterTextScatterMutation,
+  useClusterTextBubbleMutation,
+} = clusterApi

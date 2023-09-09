@@ -1,12 +1,9 @@
 'use client'
 
 import React from 'react'
-import dynamic from 'next/dynamic'
 import Box from '@/components/Box'
 import Button from '@/components/Button'
 import {saveImage} from '@/utils/saveVisualizationFile'
-
-const Plot = dynamic(() => import('react-plotly.js'), {ssr: false})
 
 function BubbleVisualization({chartData}) {
   const data = chartData.map((bubble) => ({
@@ -14,11 +11,10 @@ function BubbleVisualization({chartData}) {
     y: bubble.yValues,
     mode: 'markers',
     marker: {
-      size: bubble.markerSizes, // Размеры маркеров (зависят от данных)
-      color: bubble.markerColors, // Цвета маркеров (зависят от данных)
-      opacity: 0.6, // Прозрачность маркеров
+      size: bubble.markerSizes,
+      opacity: 0.6,
     },
-    text: bubble.textLabels, // Текстовые метки для маркеров (зависят от данных)
+    text: bubble.textLabels,
     type: 'scatter',
     name: bubble.chartName,
   }))
