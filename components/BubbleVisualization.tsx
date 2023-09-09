@@ -1,10 +1,10 @@
 'use client'
 
-import React, {useEffect, useRef} from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic'
-import Box from "@/components/Box";
-import Button from "@/components/Button";
-import {saveImage} from "@/utils/saveVisualizationFile";
+import Box from '@/components/Box'
+import Button from '@/components/Button'
+import {saveImage} from '@/utils/saveVisualizationFile'
 
 const Plot = dynamic(() => import('react-plotly.js'), {ssr: false})
 
@@ -28,24 +28,7 @@ function BubbleVisualization({chartData}) {
     displaylogo: false,
     responsive: true,
   }
-
-  const chartRef = useRef(null)
-
-  /*const saveImage = () => {
-    const plotlyGraph = document.querySelector('.js-plotly-plot') as HTMLElement;
-    const svgData = plotlyGraph.querySelector('svg')?.outerHTML;
-
-    if (svgData) {
-      const blob = new Blob([svgData], {type: 'image/svg+xml'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'cluster-visualization.svg';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-  }*/
-
+  
   return (
     <div className='flex w-full h-full items-center justify-center'>
       <Box id='bubble-chart-div' className='w-full md:w-[75%]'>

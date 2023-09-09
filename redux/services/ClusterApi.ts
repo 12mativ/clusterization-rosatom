@@ -9,7 +9,7 @@ type User = {
 export const clusterApi = createApi({
   reducerPath: "clusterApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://localhost:5000/",
+    baseUrl: "http://localhost:5000/",
   }),
   endpoints: (builder) => ({
     clusterFile: builder.mutation({
@@ -19,14 +19,27 @@ export const clusterApi = createApi({
         body: file,
       })
     }),
-    clusterText: builder.mutation({
+    clusterTextHist: builder.mutation({
       query: (answers) => ({
         url: '/predict',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
         method: 'POST',
-        body: {answers: answers},
+        body: JSON.stringify({answers: answers}),
+      })
+    }),
+    clusterTextScatter: builder.mutation({
+      query: (answers) => ({
+        url: '/points',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        method: 'POST',
+        body: JSON.stringify({answers: answers}),
       })
     })
   }),
 });
 
-export const { useClusterFileMutation, useClusterTextMutation } = clusterApi;
+export const { useClusterFileMutation, useClusterTextHistMutation } = clusterApi;

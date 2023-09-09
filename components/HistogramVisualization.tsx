@@ -21,7 +21,7 @@ function HistogramVisualization({chartData}) {
       y: clusterValues,
       type: 'bar',
       marker: {
-        color: 'blue', // Цвет колонок
+        color: 'emerald', // Цвет колонок
       },
     },
   ]

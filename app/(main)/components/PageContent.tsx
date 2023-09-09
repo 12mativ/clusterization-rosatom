@@ -1,29 +1,18 @@
 'use client'
 
-import {useClusterTextMutation} from '@/redux/services/ClusterApi'
 import Box from '@/components/Box'
 import Button from '@/components/Button'
-import {
-  AiFillDelete,
-  AiOutlineArrowLeft,
-  AiOutlinePlusCircle,
-} from 'react-icons/ai'
+import {AiOutlineArrowLeft} from 'react-icons/ai'
 import {useRouter} from 'next/navigation'
-import {BsArrowUpRight, BsFiletypeCsv} from 'react-icons/bs'
+import {BsFiletypeJson} from 'react-icons/bs'
 import {useState} from 'react'
-import {v4 as uuidv4} from 'uuid'
 import toast from 'react-hot-toast'
 import ScatterVisualization from '@/components/ScatterVisualization'
 import BubbleVisualization from '@/components/BubbleVisualization'
 import HistogramVisualization from '@/components/HistogramVisualization'
-import Input from "@/components/Input";
+import AnswerForm from '@/components/AnswerForm'
 
-interface Answer {
-  id: string
-  answer: string
-}
-
-const scatterData = [
+/*const scatterData = [
   {
     clusterId: 1,
     clusterName: 'Кластер 1',
@@ -130,7 +119,7 @@ const scatterData = [
       {x: 3.2, y: 4},
     ],
   },
-]
+]*/
 
 const bubbleData = [
   {
@@ -167,6 +156,7 @@ const bubbleData = [
   },
 ]
 
+/*
 const histogramData = {
   Cluster1: 10,
   Cluster2: 15,
@@ -196,27 +186,15 @@ const histogramData = {
   Cluster27: 28,
   Cluster28: 28,
 }
+*/
 
 const PageContent = () => {
   const router = useRouter()
-  const [clusterText, {data, error, isLoading}] = useClusterTextMutation()
 
-  const [answers, setAnswers] = useState<Answer[]>([])
-  const [currentAnswer, setCurrentAnswer] = useState('')
   const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [histData, setHistData] = useState()
-
-  const handleAddAnswer = () => {
-    if (currentAnswer.length === 0) {
-      return
-    }
-    setAnswers((prevState) => [
-      ...prevState,
-      {id: uuidv4(), answer: currentAnswer},
-    ])
-    setCurrentAnswer('')
-  }
+  const [scatterData, setScatterData] = useState()
 
   const uploadFile: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -240,16 +218,7 @@ const PageContent = () => {
     }
   }
 
-  const sendAnswers = async () => {
-    if (answers.length !== 0) {
-      const data = await clusterText(answers)
-      setHistData(data)
-      console.log(data)
-      return setSubmitted(true)
-    } else {
-      return toast.error('Вы должны добавить хотя бы один ответ')
-    }
-  }
+
 
   return !submitted ? (
     <div className='w-full flex items-center justify-center p-2'>
@@ -266,9 +235,9 @@ const PageContent = () => {
             htmlFor='single'
             className='flex flex-col items-center justify-center gap-y-2'
           >
-            <BsFiletypeCsv size={70} />
+            <BsFiletypeJson size={70} />
             <div className='flex items-center justify-center gap-x-2 bg-emerald-500 p-3 text-black font-bold rounded-full mt-2 hover:cursor-pointer hover:opacity-75 transition'>
-              <p>Загрузите ваш .csv файл</p>
+              <p>Загрузите ваш .json файл</p>
             </div>
           </label>
 
@@ -277,75 +246,13 @@ const PageContent = () => {
             className='hidden'
             type='file'
             id='single'
-            accept='.csv'
+            accept='.json'
             disabled={uploading}
           />
 
           <p className='py-4 text-xl'>Или...</p>
 
-          <label className='self-start text-md' htmlFor='name'>
-            Введите ваш ответ:
-          </label>
-          <Input
-            id='name'
-            placeholder='Ваш ответ'
-            value={currentAnswer}
-            onChange={(e) => setCurrentAnswer(e.currentTarget.value)}
-          />
-          <div className='self-end flex flex-col gap-y-3 md:flex-row md:gap-x-3'>
-            <Button
-              onClick={handleAddAnswer}
-              className='self-end flex items-center justify-center gap-x-2 h-12 md:h-12 w-[170px] mb-2'
-            >
-              <p className='font-semibold'>Добавить ответ</p>
-              <AiOutlinePlusCircle size={24} />
-            </Button>
-            <Button
-              onClick={sendAnswers}
-              className='self-end flex items-center justify-center gap-x-2 bg-emerald-500 border-emerald-500 [box-shadow:0_10px_0_0_#128a62,0_10px_0_0_#128a62] h-12 w-[190px] md:h-12 mb-2'
-            >
-              <p className='font-semibold'>Отправить ответы</p>
-              <BsArrowUpRight size={22} />
-            </Button>
-          </div>
-
-          <div className='flex flex-col gap-y-4 self-start w-full'>
-            {answers.map((answer) => {
-              return (
-                <div
-                  key={answer.id}
-                  className='flex flex-col justify-between bg-neutral-100 bg-opacity-30 rounded-xl p-4'
-                >
-                  <p>{answer.answer}</p>
-                  <button
-                    className='
-                      self-end
-                      flex
-                      items-center
-                      justify-center
-                      gap-x-2
-                      bg-emerald-500
-                      p-3 text-black
-                      font-bold
-                      rounded-full
-                      mt-2
-                      hover:cursor-pointer
-                      hover:opacity-75
-                      transition
-                    '
-                    onClick={() => {
-                      const newAnswers = answers.filter(
-                        (a) => a.id !== answer.id
-                      )
-                      setAnswers(newAnswers)
-                    }}
-                  >
-                    <AiFillDelete size={20} />
-                  </button>
-                </div>
-              )
-            })}
-          </div>
+          <AnswerForm setHistData={setHistData} setSubmitted={setSubmitted} setScatterData={setScatterData}/>
         </Box>
       </div>
     </div>
@@ -360,7 +267,7 @@ const PageContent = () => {
           <p className='text-lg'>Назад</p>
         </Button>
         <div className='w-full'>
-          <ScatterVisualization chartData={scatterData} />
+          <ScatterVisualization chartData={scatterData.data} />
         </div>
 
         <div className='w-full'>
@@ -368,7 +275,7 @@ const PageContent = () => {
         </div>
 
         <div className='w-full'>
-          <HistogramVisualization chartData={histData} />
+          <HistogramVisualization chartData={histData.data} />
         </div>
       </div>
     </div>
