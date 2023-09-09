@@ -1,17 +1,17 @@
 'use client'
 
-import Input from "@/components/Input";
-import Button from "@/components/Button";
-import React, {useState} from "react";
-import toast from "react-hot-toast";
+import Input from '@/components/Input'
+import Button from '@/components/Button'
+import React, {useState} from 'react'
+import toast from 'react-hot-toast'
 import {
   useClusterTextBubbleMutation,
   useClusterTextHistMutation,
-  useClusterTextScatterMutation
-} from "@/redux/services/ClusterApi";
+  useClusterTextScatterMutation,
+} from '@/redux/services/ClusterApi'
 import {v4 as uuidv4} from 'uuid'
-import {AiFillDelete, AiOutlinePlusCircle} from "react-icons/ai";
-import {BsArrowUpRight} from "react-icons/bs";
+import {AiFillDelete, AiOutlinePlusCircle} from 'react-icons/ai'
+import {BsArrowUpRight} from 'react-icons/bs'
 
 interface Answer {
   id: string
@@ -23,19 +23,27 @@ interface AnswerFormProps {
   setScatterData: (data: any) => void
   setBubbleData: (data: any) => void
   setSubmitted: (boolean: boolean) => void
+  clusterTextHist: (answers: Answer[]) => any
+  clusterTextScatter: (answers: Answer[]) => any
+  clusterTextBubble: (answers: Answer[]) => any
+  isLoadingViz: boolean
 }
 
-const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setScatterData, setBubbleData}) => {
-  const [clusterTextHist, {isLoading: histIsLoading}] = useClusterTextHistMutation()
-  const [clusterTextScatter, {isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
-  const [clusterTextBubble, {isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
+const AnswerForm: React.FC<AnswerFormProps> = ({
+  setHistData,
+  setSubmitted,
+  setScatterData,
+  setBubbleData,
+  clusterTextHist,
+  clusterTextBubble,
+  clusterTextScatter,
+  isLoadingViz
+}) => {
   const [currentAnswer, setCurrentAnswer] = useState('')
   const [answers, setAnswers] = useState<Answer[]>([])
 
-  const isLoading = histIsLoading && scatterIsLoading && bubbleIsLoading
-
   const handleAddAnswer = () => {
-    if (currentAnswer.length === 0 || isLoading) {
+    if (currentAnswer.length === 0 || isLoadingViz) {
       return
     }
     setAnswers((prevState) => [
@@ -46,7 +54,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
   }
 
   const sendAnswers = async () => {
-    if (answers.length > 1 && !isLoading) {
+    if (answers.length > 1 && !isLoadingViz) {
       const dataHist = await clusterTextHist(answers)
       const dataScatter = await clusterTextScatter(answers)
       const dataBubble = await clusterTextBubble(answers)
@@ -61,7 +69,11 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
 
   return (
     <>
-      <label className='self-start text-md' htmlFor='name' aria-disabled={isLoading}>
+      <label
+        className='self-start text-md'
+        htmlFor='name'
+        aria-disabled={isLoadingViz}
+      >
         Введите ваш ответ:
       </label>
       <Input
@@ -69,13 +81,13 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
         placeholder='Ваш ответ'
         value={currentAnswer}
         onChange={(e) => setCurrentAnswer(e.currentTarget.value)}
-        disabled={isLoading}
+        disabled={isLoadingViz}
       />
       <div className='self-end flex flex-col gap-y-3 md:flex-row md:gap-x-3'>
         <Button
           onClick={handleAddAnswer}
           className='self-end flex items-center justify-center gap-x-2 h-12 md:h-12 w-[170px] mb-2'
-          disabled={isLoading}
+          disabled={isLoadingViz}
         >
           <p className='font-semibold'>Добавить ответ</p>
           <AiOutlinePlusCircle size={24} />
@@ -83,7 +95,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
         <Button
           onClick={sendAnswers}
           className='self-end flex items-center justify-center gap-x-2 bg-emerald-500 border-emerald-500 [box-shadow:0_10px_0_0_#128a62,0_10px_0_0_#128a62] h-12 w-[190px] md:h-12 mb-2'
-          disabled={isLoading}
+          disabled={isLoadingViz}
         >
           <p className='font-semibold'>Отправить ответы</p>
           <BsArrowUpRight size={22} />
@@ -115,12 +127,10 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
                       transition
                     '
                 onClick={() => {
-                  const newAnswers = answers.filter(
-                    (a) => a.id !== answer.id
-                  )
+                  const newAnswers = answers.filter((a) => a.id !== answer.id)
                   setAnswers(newAnswers)
                 }}
-                disabled={isLoading}
+                disabled={isLoadingViz}
               >
                 <AiFillDelete size={20} />
               </button>

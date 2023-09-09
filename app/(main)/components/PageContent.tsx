@@ -23,9 +23,11 @@ export const revalidate = 0
 const PageContent = () => {
   const router = useRouter()
 
-  const [{isLoading: histIsLoading}] = useClusterTextHistMutation()
-  const [{isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
-  const [{isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
+  const [clusterTextHist, {isLoading: histIsLoading}] = useClusterTextHistMutation()
+  const [clusterTextScatter, {isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
+  const [clusterTextBubble, {isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
+
+  const isLoadingViz = histIsLoading && scatterIsLoading && bubbleIsLoading
 
   const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -59,7 +61,7 @@ const PageContent = () => {
     }
   }
 
-  if (isLoading || histIsLoading || scatterIsLoading || bubbleIsLoading) {
+  if (isLoading || isLoadingViz) {
     return <Loader />
   }
 
@@ -103,6 +105,10 @@ const PageContent = () => {
             setSubmitted={setSubmitted}
             setScatterData={setScatterData}
             setBubbleData={setBubbleData}
+            clusterTextHist={clusterTextHist}
+            clusterTextScatter={clusterTextScatter}
+            clusterTextBubble={clusterTextBubble}
+            isLoadingViz={isLoadingViz}
           />
         </Box>
       </div>
@@ -146,7 +152,7 @@ const PageContent = () => {
               </div>
 
               <div className='w-full'>
-                <HistogramVisualization chartData={histData} />
+                <HistogramVisualization chartData={histData.data} />
               </div>
             </>
           )
