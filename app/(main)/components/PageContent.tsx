@@ -20,7 +20,7 @@ import Input from "@/components/Input";
 
 interface Answer {
   id: string
-  text: string
+  answer: string
 }
 
 const scatterData = [
@@ -212,7 +212,7 @@ const PageContent = () => {
     }
     setAnswers((prevState) => [
       ...prevState,
-      {id: uuidv4(), text: currentAnswer},
+      {id: uuidv4(), answer: currentAnswer},
     ])
     setCurrentAnswer('')
   }
@@ -314,7 +314,7 @@ const PageContent = () => {
                   key={answer.id}
                   className='flex flex-col justify-between bg-neutral-100 bg-opacity-30 rounded-xl p-4'
                 >
-                  <p>{answer.text}</p>
+                  <p>{answer.answer}</p>
                   <button
                     className='
                       self-end
