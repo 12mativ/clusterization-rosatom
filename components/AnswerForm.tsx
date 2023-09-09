@@ -26,14 +26,16 @@ interface AnswerFormProps {
 }
 
 const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setScatterData, setBubbleData}) => {
-  const [clusterTextHist, {data: histData, error: histError, isLoading: histIsLoading}] = useClusterTextHistMutation()
-  const [clusterTextScatter, {data: scatterData, error: scatterError, isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
-  const [clusterTextBubble, {data: bubbleData, error: bubbleError, isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
+  const [clusterTextHist, {isLoading: histIsLoading}] = useClusterTextHistMutation()
+  const [clusterTextScatter, {isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
+  const [clusterTextBubble, {isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
   const [currentAnswer, setCurrentAnswer] = useState('')
   const [answers, setAnswers] = useState<Answer[]>([])
 
+  const isLoading = histIsLoading && scatterIsLoading && bubbleIsLoading
+
   const handleAddAnswer = () => {
-    if (currentAnswer.length === 0) {
+    if (currentAnswer.length === 0 || isLoading) {
       return
     }
     setAnswers((prevState) => [
@@ -44,16 +46,13 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
   }
 
   const sendAnswers = async () => {
-    if (answers.length > 1) {
+    if (answers.length > 1 && !isLoading) {
       const dataHist = await clusterTextHist(answers)
       const dataScatter = await clusterTextScatter(answers)
       const dataBubble = await clusterTextBubble(answers)
       setHistData(dataHist)
       setScatterData(dataScatter)
-      setBubbleData(dataScatter)
-      console.log(dataHist)
-      console.log(dataScatter)
-      console.log(dataBubble)
+      setBubbleData(dataBubble)
       return setSubmitted(true)
     } else {
       return toast.error('Вы должны добавить больше одного ответа')
@@ -62,7 +61,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
 
   return (
     <>
-      <label className='self-start text-md' htmlFor='name'>
+      <label className='self-start text-md' htmlFor='name' aria-disabled={isLoading}>
         Введите ваш ответ:
       </label>
       <Input
@@ -70,12 +69,13 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
         placeholder='Ваш ответ'
         value={currentAnswer}
         onChange={(e) => setCurrentAnswer(e.currentTarget.value)}
+        disabled={isLoading}
       />
       <div className='self-end flex flex-col gap-y-3 md:flex-row md:gap-x-3'>
         <Button
           onClick={handleAddAnswer}
           className='self-end flex items-center justify-center gap-x-2 h-12 md:h-12 w-[170px] mb-2'
-          disabled={histIsLoading}
+          disabled={isLoading}
         >
           <p className='font-semibold'>Добавить ответ</p>
           <AiOutlinePlusCircle size={24} />
@@ -83,7 +83,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
         <Button
           onClick={sendAnswers}
           className='self-end flex items-center justify-center gap-x-2 bg-emerald-500 border-emerald-500 [box-shadow:0_10px_0_0_#128a62,0_10px_0_0_#128a62] h-12 w-[190px] md:h-12 mb-2'
-          disabled={histIsLoading}
+          disabled={isLoading}
         >
           <p className='font-semibold'>Отправить ответы</p>
           <BsArrowUpRight size={22} />
@@ -120,7 +120,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
                   )
                   setAnswers(newAnswers)
                 }}
-                disabled={histIsLoading}
+                disabled={isLoading}
               >
                 <AiFillDelete size={20} />
               </button>

@@ -33,7 +33,7 @@ function BubbleVisualization({chartData}) {
           className='w-[98%]'
           data={data}
           layout={{
-            title: 'Бабл визуализация',
+            title: 'Bubble визуализация',
             xaxis: {title: 'X-ось'},
             yaxis: {title: 'Y-ось'},
           }}

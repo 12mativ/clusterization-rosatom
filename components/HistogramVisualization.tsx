@@ -17,12 +17,12 @@ function HistogramVisualization({chartData}) {
 
   const data = [
     {
-      x: clusterNames,
       y: clusterValues,
       type: 'bar',
       marker: {
-        color: 'emerald', // Цвет колонок
+        color: 'blue', // Цвет колонок
       },
+      hovertext: clusterNames, // Показать значение x и текстовую подпись при наведении
     },
   ]
 

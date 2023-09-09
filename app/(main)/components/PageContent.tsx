@@ -11,156 +11,21 @@ import ScatterVisualization from '@/components/ScatterVisualization'
 import BubbleVisualization from '@/components/BubbleVisualization'
 import HistogramVisualization from '@/components/HistogramVisualization'
 import AnswerForm from '@/components/AnswerForm'
-import {useClusterFileMutation, useClusterTextHistMutation} from "@/redux/services/ClusterApi";
-
-/*const scatterData = [
-  {
-    clusterId: 1,
-    clusterName: 'Кластер 1',
-    dataPoints: [
-      {x: 2, y: 20},
-      {x: 4, y: 20},
-      {x: 6, y: 20},
-      {x: 6, y: 20.1},
-      {x: 6, y: 20.05},
-      {x: 6, y: 20.3},
-      {x: 6.2, y: 24},
-      {x: 6.1, y: 24.21},
-      {x: 6, y: 26.12321},
-      {x: 6.23, y: 20.3412},
-      {x: 6.445, y: 20},
-      {x: 6.1223, y: 20.4545},
-    ],
-  },
-  {
-    clusterId: 2,
-    clusterName: 'Кластер 2',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 3,
-    clusterName: 'Кластер 3',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 4,
-    clusterName: 'Кластер 4',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 5,
-    clusterName: 'Кластер 5',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 6,
-    clusterName: 'Кластер 6',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 7,
-    clusterName: 'Кластер 7',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 7,
-    clusterName: 'Кластер 7',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-  {
-    clusterId: 8,
-    clusterName: 'Кластер 8',
-    dataPoints: [
-      {x: 1, y: 2},
-      {x: 3, y: 4.1},
-      {x: 3, y: 4.2},
-      {x: 3.1, y: 4},
-      {x: 3.2, y: 4},
-    ],
-  },
-]*/
-
-/*const bubbleData = [
-  {
-    chartName: 'Кластер 1',
-    xValues: [1],
-    yValues: [10],
-    markerSizes: [20],
-    markerColors: ['blue'],
-    textLabels: ['Кластер 1'],
-  },
-  {
-    chartName: 'Кластер 2',
-    xValues: [54],
-    yValues: [50],
-    markerSizes: [100],
-    markerColors: ['red'],
-    textLabels: ['Кластер 2'],
-  },
-  {
-    chartName: 'Кластер 3',
-    xValues: [43],
-    yValues: [200],
-    markerSizes: [60],
-    markerColors: ['green'],
-    textLabels: ['Кластер 3'],
-  },
-  {
-    chartName: 'Кластер 4',
-    xValues: [43],
-    yValues: [345],
-    markerSizes: [23],
-    markerColors: ['purple'],
-    textLabels: ['Кластер 4'],
-  },
-]*/
+import {
+  useClusterFileMutation, useClusterTextBubbleMutation,
+  useClusterTextHistMutation,
+  useClusterTextScatterMutation
+} from "@/redux/services/ClusterApi";
+import Loader from "@/components/Loader";
 
 export const revalidate = 0
 
 const PageContent = () => {
   const router = useRouter()
+
+  const [{isLoading: histIsLoading}] = useClusterTextHistMutation()
+  const [{isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
+  const [{isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
 
   const [uploading, setUploading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -168,7 +33,7 @@ const PageContent = () => {
   const [scatterData, setScatterData] = useState()
   const [bubbleData, setBubbleData] = useState()
   const [fileData, setFileData] = useState()
-  const [clusterFile, {data, error: histError, isLoading: histIsLoading}] = useClusterFileMutation()
+  const [clusterFile, {isLoading}] = useClusterFileMutation()
 
   const uploadFile: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -183,7 +48,6 @@ const PageContent = () => {
       const file = event.target?.files[0]
       const formData = new FormData();
       formData.append('fileInput', file);
-      console.log(formData)
       const fileObj = await clusterFile(formData)
       setFileData(fileObj)
 
@@ -193,6 +57,10 @@ const PageContent = () => {
       setSubmitted(true)
       setUploading(false)
     }
+  }
+
+  if (isLoading || histIsLoading || scatterIsLoading || bubbleIsLoading) {
+    return <Loader />
   }
 
   return !submitted ? (
@@ -243,7 +111,10 @@ const PageContent = () => {
     <div className='flex w-full justify-center p-2'>
       <div className='flex flex-col gap-y-4 w-full md:w-[75%]'>
         <Button
-          onClick={() => setSubmitted(false)}
+          onClick={() => {
+            setSubmitted(false)
+            setFileData(null)
+          }}
           className='self-start w-[150px] flex gap-x-2 mb-2 items-center justify-center'
         >
           <AiOutlineArrowLeft size={22} />
@@ -275,7 +146,7 @@ const PageContent = () => {
               </div>
 
               <div className='w-full'>
-                <HistogramVisualization chartData={histData.data} />
+                <HistogramVisualization chartData={histData} />
               </div>
             </>
           )
