@@ -11,6 +11,7 @@ import ScatterVisualization from '@/components/ScatterVisualization'
 import BubbleVisualization from '@/components/BubbleVisualization'
 import HistogramVisualization from '@/components/HistogramVisualization'
 import AnswerForm from '@/components/AnswerForm'
+import {useClusterFileMutation, useClusterTextHistMutation} from "@/redux/services/ClusterApi";
 
 /*const scatterData = [
   {
@@ -166,6 +167,8 @@ const PageContent = () => {
   const [histData, setHistData] = useState()
   const [scatterData, setScatterData] = useState()
   const [bubbleData, setBubbleData] = useState()
+  const [fileData, setFileData] = useState()
+  const [clusterFile, {data, error: histError, isLoading: histIsLoading}] = useClusterFileMutation()
 
   const uploadFile: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -177,10 +180,11 @@ const PageContent = () => {
         toast.error('Вы должны прикрепить файл')
       }
 
-      setTimeout(() => {
-        const file = event.target?.files[0]
-        console.log(file)
-      }, 3000)
+      const file = event.target?.files[0]
+      console.log(file)
+      const fileObj = await clusterFile(file)
+      setFileData(fileObj)
+
     } catch (error) {
       toast.error('Ошибка при загрузке файла')
     } finally {
@@ -240,17 +244,37 @@ const PageContent = () => {
           <AiOutlineArrowLeft size={22} />
           <p className='text-lg'>Назад</p>
         </Button>
-        <div className='w-full'>
-          <ScatterVisualization chartData={scatterData.data} />
-        </div>
+        {
+          fileData ? (
+            <>
+              <div className='w-full'>
+                <ScatterVisualization chartData={fileData.data['points']} />
+              </div>
 
-        <div className='w-full'>
-          <BubbleVisualization chartData={bubbleData.data} />
-        </div>
+              <div className='w-full'>
+                <BubbleVisualization chartData={fileData.data['bubbles']} />
+              </div>
 
-        <div className='w-full'>
-          <HistogramVisualization chartData={histData.data} />
-        </div>
+              <div className='w-full'>
+                <HistogramVisualization chartData={fileData.data['hist']} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className='w-full'>
+                <ScatterVisualization chartData={scatterData.data} />
+              </div>
+
+              <div className='w-full'>
+                <BubbleVisualization chartData={bubbleData.data} />
+              </div>
+
+              <div className='w-full'>
+                <HistogramVisualization chartData={histData.data} />
+              </div>
+            </>
+          )
+        }
       </div>
     </div>
   )

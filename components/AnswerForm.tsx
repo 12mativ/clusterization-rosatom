@@ -25,7 +25,7 @@ interface AnswerFormProps {
   setSubmitted: (boolean: boolean) => void
 }
 
-const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setScatterData}) => {
+const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setScatterData, setBubbleData}) => {
   const [clusterTextHist, {data: histData, error: histError, isLoading: histIsLoading}] = useClusterTextHistMutation()
   const [clusterTextScatter, {data: scatterData, error: scatterError, isLoading: scatterIsLoading}] = useClusterTextScatterMutation()
   const [clusterTextBubble, {data: bubbleData, error: bubbleError, isLoading: bubbleIsLoading}] = useClusterTextBubbleMutation()
@@ -50,6 +50,7 @@ const AnswerForm: React.FC<AnswerFormProps> = ({setHistData, setSubmitted, setSc
       const dataBubble = await clusterTextBubble(answers)
       setHistData(dataHist)
       setScatterData(dataScatter)
+      setBubbleData(dataScatter)
       console.log(dataHist)
       console.log(dataScatter)
       console.log(dataBubble)

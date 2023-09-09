@@ -1,11 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
-type User = {
-  id: number
-  name: string
-  email: number
-}
-
 export const clusterApi = createApi({
   reducerPath: 'clusterApi',
   baseQuery: fetchBaseQuery({
@@ -14,14 +8,14 @@ export const clusterApi = createApi({
   endpoints: (builder) => ({
     clusterFile: builder.mutation({
       query: (file: File) => ({
-        url: '/posts',
+        url: '/predict',
         method: 'POST',
         body: file,
       }),
     }),
     clusterTextHist: builder.mutation({
       query: (answers) => ({
-        url: '/predict',
+        url: '/hist',
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },

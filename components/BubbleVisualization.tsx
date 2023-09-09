@@ -3,6 +3,7 @@
 import React from 'react'
 import Box from '@/components/Box'
 import Button from '@/components/Button'
+import Plot from 'react-plotly.js'
 import {saveImage} from '@/utils/saveVisualizationFile'
 
 function BubbleVisualization({chartData}) {
