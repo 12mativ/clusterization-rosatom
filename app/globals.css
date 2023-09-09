@@ -23,3 +23,12 @@ body,
     background-position: 0% 50%;
   }
 }
+
+.box {
+  animation: 2s show ease;
+}
+
+@keyframes show {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

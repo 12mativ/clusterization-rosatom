@@ -9,6 +9,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         type={type}
         className={twMerge(`
+          box
           button 
           w-full
           h-14 

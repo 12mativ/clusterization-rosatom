@@ -9,6 +9,7 @@ interface BoxProps {
 const Box: React.FC<BoxProps> = ({children, className}) => {
   return (
     <div className={twMerge(`
+      box
       flex 
       flex-col 
       w-full
@@ -19,6 +20,7 @@ const Box: React.FC<BoxProps> = ({children, className}) => {
       bg-sky-400 
       bg-opacity-30 
       rounded-xl
+      shadow-2xl
     `,
       className!
     )}>

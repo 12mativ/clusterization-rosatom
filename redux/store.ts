@@ -1,15 +1,15 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {userApi} from "./services/UserApi";
+import {clusterApi} from "./services/ClusterApi";
 
 const rootReducer = combineReducers({
-  [userApi.reducerPath]: userApi.reducer,
+  [clusterApi.reducerPath]: clusterApi.reducer,
 })
 
 export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({}).concat([userApi.middleware]),
+      getDefaultMiddleware({}).concat([clusterApi.middleware]),
   })
 }
 
