@@ -21,6 +21,7 @@ interface ClusterVisualizationProps {
   chartData: Cluster[]
 }
 
+//@ts-ignore
 function ScatterVisualization({chartData}: ClusterVisualizationProps) {
   if (!chartData) {
     return

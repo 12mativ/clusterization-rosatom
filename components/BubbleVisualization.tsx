@@ -6,6 +6,7 @@ import Button from '@/components/Button'
 import Plot from 'react-plotly.js'
 import {saveImage} from '@/utils/saveVisualizationFile'
 
+//@ts-ignore
 function BubbleVisualization({chartData}) {
   const data = chartData.map((bubble) => ({
     x: bubble.xValues,

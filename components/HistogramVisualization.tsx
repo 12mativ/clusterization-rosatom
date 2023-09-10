@@ -6,6 +6,7 @@ import Plot from 'react-plotly.js'
 import {saveImage} from "@/utils/saveVisualizationFile";
 import Button from "@/components/Button";
 
+//@ts-ignore
 function HistogramVisualization({chartData}) {
 
   if (!chartData || Object.keys(chartData).length === 0) {
