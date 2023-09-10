@@ -52,6 +52,7 @@ const PageContent = () => {
         const formData = new FormData();
         formData.append('fileInput', file);
         const fileObj = await clusterFile(formData)
+        //@ts-ignore
         setFileData(fileObj)
       }
     } catch (error) {
