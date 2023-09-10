@@ -37,8 +37,10 @@ function HistogramVisualization({chartData}) {
     <div className='flex w-full h-full items-center justify-center'>
       {/* @ts-ignore */}
       <Box id='histogram-chart-div' className='w-full md:w-[75%]'>
+        {/* @ts-ignore */}
         <Plot
           className='w-[98%]'
+          //@ts-ignore
           data={data}
           layout={{
             title: 'Гистограмма кластеров',

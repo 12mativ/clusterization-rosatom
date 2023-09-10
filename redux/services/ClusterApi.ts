@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 export const clusterApi = createApi({
   reducerPath: 'clusterApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/',
+    baseUrl: 'http://89.108.103.109',
   }),
   endpoints: (builder) => ({
     clusterFile: builder.mutation({
