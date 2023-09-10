@@ -121,6 +121,7 @@ const PageContent = () => {
         <Button
           onClick={() => {
             setSubmitted(false)
+            //@ts-ignore
             setFileData(null)
           }}
           className='self-start w-[150px] flex gap-x-2 mb-2 items-center justify-center'
