@@ -32,9 +32,10 @@ function HistogramVisualization({chartData}) {
     displayModeBar: false,
     displaylogo: false,
   }
-
+  //@ts-ignore
   return (
     <div className='flex w-full h-full items-center justify-center'>
+      {/* @ts-ignore */}
       <Box id='histogram-chart-div' className='w-full md:w-[75%]'>
         <Plot
           className='w-[98%]'

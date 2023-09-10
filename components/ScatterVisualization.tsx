@@ -40,9 +40,10 @@ function ScatterVisualization({chartData}: ClusterVisualizationProps) {
     displayModeBar: false,
     displaylogo: false,
   }
-
+  //@ts-ignore
   return (
     <div className='flex w-full h-full items-center justify-center'>
+      {/* @ts-ignore */}
       <Box id='scatter-chart-div' className='w-full md:w-[75%]'>
         <Plot
           className='w-[98%]'

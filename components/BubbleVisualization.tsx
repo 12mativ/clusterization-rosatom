@@ -27,9 +27,10 @@ function BubbleVisualization({chartData}) {
     displaylogo: false,
     responsive: true,
   }
-  
+  //@ts-ignore
   return (
     <div className='flex w-full h-full items-center justify-center'>
+      {/* @ts-ignore */}
       <Box id='bubble-chart-div' className='w-full md:w-[75%]'>
         <Plot
           className='w-[98%]'
