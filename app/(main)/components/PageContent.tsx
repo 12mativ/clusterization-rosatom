@@ -47,12 +47,13 @@ const PageContent = () => {
         toast.error('Вы должны прикрепить файл')
       }
 
-      const file = event.target?.files[0]
-      const formData = new FormData();
-      formData.append('fileInput', file);
-      const fileObj = await clusterFile(formData)
-      setFileData(fileObj)
-
+      if(event.target?.files) {
+        const file = event.target?.files[0]
+        const formData = new FormData();
+        formData.append('fileInput', file);
+        const fileObj = await clusterFile(formData)
+        setFileData(fileObj)
+      }
     } catch (error) {
       toast.error('Ошибка при загрузке файла')
     } finally {
