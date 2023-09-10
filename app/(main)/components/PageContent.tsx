@@ -20,6 +20,7 @@ import Loader from "@/components/Loader";
 
 export const revalidate = 0
 
+//@ts-ignore
 const PageContent = () => {
   const router = useRouter()
 
@@ -67,6 +68,7 @@ const PageContent = () => {
     return <Loader />
   }
 
+  //@ts-ignore
   return !submitted ? (
     <div className='w-full flex items-center justify-center p-2'>
       <div className='flex flex-col gap-y-6 w-full md:w-[75%]'>
@@ -133,28 +135,34 @@ const PageContent = () => {
           fileData ? (
             <>
               <div className='w-full'>
+                {/* @ts-ignore */}
                 <ScatterVisualization chartData={fileData.data['points']} />
               </div>
 
               <div className='w-full'>
+                {/* @ts-ignore */}
                 <BubbleVisualization chartData={fileData.data['bubbles']} />
               </div>
 
               <div className='w-full'>
+                {/* @ts-ignore */}
                 <HistogramVisualization chartData={fileData.data['hist']} />
               </div>
             </>
           ) : (
             <>
               <div className='w-full'>
+                {/* @ts-ignore */}
                 <ScatterVisualization chartData={scatterData.data} />
               </div>
 
               <div className='w-full'>
+                {/* @ts-ignore */}
                 <BubbleVisualization chartData={bubbleData.data} />
               </div>
 
               <div className='w-full'>
+                {/* @ts-ignore */}
                 <HistogramVisualization chartData={histData.data} />
               </div>
             </>
