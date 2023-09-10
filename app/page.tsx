@@ -17,7 +17,7 @@ export default function Home() {
     <div className='w-full h-full flex flex-col items-center justify-center p-2'>
       <Box className='w-full sm:w-[75%]'>
         <h1 className='w-[90%] md:w-[75%] text-center text-3xl'>
-          Улучшение представлений результатов в сервисе "Мой голос"
+          Улучшение представлений результатов в сервисе «Мой голос»
         </h1>
         <h2 className='text-center text-2xl font-bold text-emerald-500'>
           SHA-256
