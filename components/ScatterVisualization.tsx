@@ -27,6 +27,7 @@ function ScatterVisualization({chartData}: ClusterVisualizationProps) {
     return
   }
 
+  //@ts-ignore
   const data = chartData.map((cluster) => ({
     x: cluster.dataPoints.map((point) => point.x),
     y: cluster.dataPoints.map((point) => point.y),

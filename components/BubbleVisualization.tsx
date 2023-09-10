@@ -8,6 +8,7 @@ import {saveImage} from '@/utils/saveVisualizationFile'
 
 //@ts-ignore
 function BubbleVisualization({chartData}) {
+  //@ts-ignore
   const data = chartData.map((bubble) => ({
     x: bubble.xValues,
     y: bubble.yValues,

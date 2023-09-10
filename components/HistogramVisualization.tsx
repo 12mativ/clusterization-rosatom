@@ -12,8 +12,9 @@ function HistogramVisualization({chartData}) {
   if (!chartData || Object.keys(chartData).length === 0) {
     return null;
   }
-
+  //@ts-ignore
   const clusterNames = Object.keys(chartData)
+  //@ts-ignore
   const clusterValues = Object.values(chartData)
 
   const data = [
